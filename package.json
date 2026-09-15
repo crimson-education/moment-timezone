@@ -1,7 +1,7 @@
 {
-	"name": "moment-timezone",
-	"version": "0.5.45",
-	"description": "Parse and display moments in any timezone.",
+	"name": "@crimson-education/moment-timezone",
+	"version": "0.5.45-crimson.1",
+	"description": "Parse and display moments in any timezone. Crimson fork of moment-timezone 0.5.45: moment.tz() throws instead of logging and silently falling back to UTC when a zone has no data.",
 	"homepage": "http://momentjs.com/timezone/",
 	"author": "Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)",
 	"keywords": [
@@ -21,12 +21,16 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/moment/moment-timezone.git"
+		"url": "git+https://github.com/crimson-education/moment-timezone.git"
 	},
 	"bugs": {
-		"url": "https://github.com/moment/moment-timezone/issues"
+		"url": "https://github.com/crimson-education/moment-timezone/issues"
 	},
 	"license": "MIT",
+	"publishConfig": {
+		"access": "public",
+		"tag": "crimson"
+	},
 	"dependencies": {
 		"moment": "^2.29.4"
 	},

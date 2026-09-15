@@ -74,29 +74,27 @@ exports.add = {
 	},
 
 	missingZone : function (test) {
-		if (typeof console === 'undefined') {
-			test.done();
-			return;
+		// Crimson patch: a missing zone throws instead of logging and silently
+		// continuing in UTC, so the caller gets the message with a stack trace.
+		var error;
+
+		try {
+			moment().tz('Not_A/Loaded_Zone');
+		} catch (e) {
+			error = e;
 		}
 
-		var oldError = console.error,
-			errors = '';
+		test.ok(error, "Missing zone data should throw.");
+		test.equal(
+			error.message,
+			"Moment Timezone has no data for Not_A/Loaded_Zone. See http://momentjs.com/timezone/docs/#/data-loading/.",
+			"Should throw the missing zone message."
+		);
+		test.ok(/add\.js/.test(error.stack), "Should throw with a stack pointing at the caller.");
 
-		console.error = function (message) {
-			errors += message;
-		};
-
-		moment().tz('Not_A/Loaded_Zone');
-
-		test.equal(errors, "Moment Timezone has no data for Not_A/Loaded_Zone. See http://momentjs.com/timezone/docs/#/data-loading/.");
-
-		errors = '';
-
-		tz('Another/Unloaded_Zone');
-
-		test.equal(errors, "Moment Timezone has no data for Another/Unloaded_Zone. See http://momentjs.com/timezone/docs/#/data-loading/.");
-
-		console.error = oldError;
+		test.throws(function () {
+			tz('Another/Unloaded_Zone');
+		}, /Moment Timezone has no data for Another\/Unloaded_Zone\./, "moment.tz() should throw as well.");
 
 		test.done();
 	}

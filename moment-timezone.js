@@ -670,7 +670,9 @@
 			if (this._z) {
 				moment.updateOffset(this, keepTime);
 			} else {
-				logError("Moment Timezone has no data for " + name + ". See http://momentjs.com/timezone/docs/#/data-loading/.");
+				// Crimson patch: throw instead of logging and silently continuing
+				// in UTC, so the failure reaches the caller with a stack trace.
+				throw new Error("Moment Timezone has no data for " + name + ". See http://momentjs.com/timezone/docs/#/data-loading/.");
 			}
 			return this;
 		}
